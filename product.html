@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details - CodeMarket</title>
+    <meta name="description" content="View detailed information about this premium source code solution.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💻</text></svg>">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav class="container">
+            <a href="/" class="logo">💻 CodeMarket</a>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/admin">Admin</a></li>
+                <li><a href="/terms">Terms</a></li>
+                <li><a href="/privacy">Privacy</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Loading State -->
+        <section id="loading-section" class="container">
+            <div class="hero">
+                <div class="text-center">
+                    <div class="loading"></div>
+                    <p style="color: white; margin-top: 1rem;">Loading product details...</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Product Not Found -->
+        <section id="not-found-section" class="container hidden">
+            <div class="hero">
+                <div class="card" style="max-width: 500px; margin: 0 auto; text-align: center;">
+                    <h2>Product Not Found</h2>
+                    <p>The product you're looking for doesn't exist or has been removed.</p>
+                    <a href="/" class="btn">Back to Home</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Product Details -->
+        <section id="product-section" class="container hidden">
+            <div style="padding: 2rem 0;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start;">
+                    <!-- Product Image -->
+                    <div class="card" style="padding: 0; overflow: hidden;">
+                        <img id="product-image" 
+                             src="" 
+                             alt="Product Image" 
+                             style="width: 100%; height: 400px; object-fit: cover;">
+                    </div>
+
+                    <!-- Product Info -->
+                    <div class="card">
+                        <h1 id="product-title" style="font-size: 2.5rem; margin-bottom: 1rem; color: #333;"></h1>
+                        <div id="product-price" style="font-size: 2rem; font-weight: 700; color: #667eea; margin-bottom: 2rem;"></div>
+                        
+                        <div style="margin-bottom: 2rem;">
+                            <h3 style="margin-bottom: 1rem; color: #333;">Description</h3>
+                            <p id="product-description" style="line-height: 1.6; color: #666; font-size: 1.1rem;"></p>
+                        </div>
+
+                        <div style="margin-bottom: 2rem;">
+                            <h3 style="margin-bottom: 1rem; color: #333;">What You Get</h3>
+                            <ul style="color: #666; line-height: 1.8;">
+                                <li>✅ Complete source code</li>
+                                <li>✅ Documentation and setup guide</li>
+                                <li>✅ Instant download after payment</li>
+                                <li>✅ Commercial usage rights</li>
+                            </ul>
+                        </div>
+
+                        <button id="buy-now-btn" class="btn" style="width: 100%; font-size: 1.2rem; padding: 15px;">
+                            🛒 Buy Now - Pay Securely
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Additional Information -->
+                <div class="card" style="margin-top: 3rem;">
+                    <h3 style="margin-bottom: 1.5rem; color: #333;">Additional Information</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
+                        <div>
+                            <h4 style="color: #667eea; margin-bottom: 0.5rem;">💳 Secure Payment</h4>
+                            <p style="color: #666;">Powered by Razorpay - India's most trusted payment gateway</p>
+                        </div>
+                        <div>
+                            <h4 style="color: #667eea; margin-bottom: 0.5rem;">⚡ Instant Download</h4>
+                            <p style="color: #666;">Get immediate access to your purchase after successful payment</p>
+                        </div>
+                        <div>
+                            <h4 style="color: #667eea; margin-bottom: 0.5rem;">🔒 Commercial License</h4>
+                            <p style="color: #666;">Use the code in your commercial projects without restrictions</p>
+                        </div>
+                        <div>
+                            <h4 style="color: #667eea; margin-bottom: 0.5rem;">📚 Documentation</h4>
+                            <p style="color: #666;">Comprehensive setup and usage documentation included</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <a href="/terms">Terms of Service</a>
+                <a href="/privacy">Privacy Policy</a>
+                <a href="/admin">Admin</a>
+            </div>
+            <p>&copy; 2024 CodeMarket. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Razorpay Script -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+    <!-- JavaScript -->
+    <script type="module">
+        import { productService, utils } from './js/firebase-config.js';
+
+        // Get product ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const productId = urlParams.get('id');
+
+        // DOM elements
+        const loadingSection = document.getElementById('loading-section');
+        const notFoundSection = document.getElementById('not-found-section');
+        const productSection = document.getElementById('product-section');
+        const buyNowBtn = document.getElementById('buy-now-btn');
+
+        let currentProduct = null;
+
+        // Load product details
+        async function loadProduct() {
+            if (!productId) {
+                showNotFound();
+                return;
+            }
+
+            try {
+                const result = await productService.getProduct(productId);
+                
+                if (result.success) {
+                    currentProduct = result.product;
+                    displayProduct(currentProduct);
+                } else {
+                    showNotFound();
+                }
+            } catch (error) {
+                console.error('Error loading product:', error);
+                showNotFound();
+            }
+        }
+
+        function displayProduct(product) {
+            // Update page title
+            document.title = `${product.title} - CodeMarket`;
+            
+            // Update meta description
+            const metaDescription = document.querySelector('meta[name="description"]');
+            metaDescription.content = product.description;
+
+            // Fill product details
+            document.getElementById('product-title').textContent = product.title;
+            document.getElementById('product-description').textContent = product.description;
+            document.getElementById('product-price').textContent = `₹${product.price.toLocaleString('en-IN')}`;
+            
+            const productImage = document.getElementById('product-image');
+            productImage.src = product.imageUrl || 'https://via.placeholder.com/600x400?text=Source+Code';
+            productImage.alt = product.title;
+            productImage.onerror = function() {
+                this.src = 'https://via.placeholder.com/600x400?text=Source+Code';
+            };
+
+            // Show product section
+            loadingSection.classList.add('hidden');
+            productSection.classList.remove('hidden');
+        }
+
+        function showNotFound() {
+            loadingSection.classList.add('hidden');
+            notFoundSection.classList.remove('hidden');
+        }
+
+        // Razorpay payment handler
+        buyNowBtn.addEventListener('click', async () => {
+            if (!currentProduct) return;
+
+            const options = {
+                key: 'rzp_test_lkoFfNbWaRVyLf',
+                amount: currentProduct.price * 100, // Amount in paise
+                currency: 'INR',
+                name: 'CodeMarket',
+                description: currentProduct.title,
+                image: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">💻</text></svg>',
+                handler: function (response) {
+                    // Payment successful
+                    console.log('Payment successful:', response);
+                    
+                    // Redirect to download page with product ID and payment ID
+                    window.location.href = `/download?product=${currentProduct.id}&payment=${response.razorpay_payment_id}`;
+                },
+                prefill: {
+                    name: '',
+                    email: '',
+                    contact: ''
+                },
+                notes: {
+                    product_id: currentProduct.id,
+                    product_title: currentProduct.title
+                },
+                theme: {
+                    color: '#667eea'
+                },
+                modal: {
+                    ondismiss: function() {
+                        console.log('Payment modal closed');
+                    }
+                }
+            };
+
+            const rzp = new Razorpay(options);
+            
+            rzp.on('payment.failed', function (response) {
+                console.error('Payment failed:', response.error);
+                utils.showNotification('Payment failed. Please try again.', 'error');
+            });
+
+            rzp.open();
+        });
+
+        // Load product on page load
+        window.addEventListener('load', loadProduct);
+
+        // Responsive design adjustments
+        function adjustLayout() {
+            const productGrid = document.querySelector('#product-section > div > div');
+            if (window.innerWidth <= 768) {
+                productGrid.style.gridTemplateColumns = '1fr';
+                productGrid.style.gap = '2rem';
+            } else {
+                productGrid.style.gridTemplateColumns = '1fr 1fr';
+                productGrid.style.gap = '3rem';
+            }
+        }
+
+        window.addEventListener('resize', adjustLayout);
+        window.addEventListener('load', adjustLayout);
+    </script>
+</body>
+</html>
+
